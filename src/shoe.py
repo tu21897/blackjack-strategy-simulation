@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-import random as r
+from random import random, randint
 from .game_var import Card
 
 @dataclass
@@ -23,7 +23,7 @@ class Shoe:
         self.shuffle_deck()
 
     def hit(self) -> Card:
-        card = self.remaining_cards.pop(int(self.num_rem_cards * r.random()))
+        card = self.remaining_cards.pop(int(self.num_rem_cards * random()))
         self.num_rem_cards -= 1
         if self.num_rem_cards <= self.cut_depth:
             self.shuffle_deck()
@@ -31,5 +31,5 @@ class Shoe:
 
     def shuffle_deck(self) -> None:
         self.num_rem_cards = self.num_total_cards
-        self.cut_depth = r.randint(self.cut_range[0], self.cut_range[1])
+        self.cut_depth = randint(self.cut_range[0], self.cut_range[1])
         self.remaining_cards = self.default_deck.copy()

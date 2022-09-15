@@ -34,6 +34,9 @@ class Hand:
         return f"{self.hand_value}, {self.hand_type}, {self.bet_size}"
 
     def apply_action(self, action, card=None) -> None:
+        if self.stand:
+            raise AssertionError
+
         if action == Action.HIT:
             self.soft_value += card.value[1]
             if card == Card.ACE and self.hand_type != HandType.SOFT or self.hand_type == HandType.SOFT:
