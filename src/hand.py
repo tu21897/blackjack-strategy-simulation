@@ -53,6 +53,8 @@ class Hand:
             elif self.hand_value == self.max_hand_value:
                 self.hand_type = HandType.HARD
                 self.stand = True
+            elif self.hand_type == HandType.PAIR:
+                self.hand_type = HandType.HARD
         elif action == Action.STAND:
             self.stand = True
         else:
