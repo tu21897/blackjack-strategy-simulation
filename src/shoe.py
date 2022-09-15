@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 import random as r
-from game_var import Card
+from .game_var import Card
 
 @dataclass
 class Shoe:

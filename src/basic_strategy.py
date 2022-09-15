@@ -44,11 +44,3 @@ class HVal(Enum):
 @dataclass
 class BasicStrategy:
     hard = {(HVal.HARD21, HandType.HARD, Card.TWO): Action.STAND}
-    pass
-
-
-def main():
-    return 1
-
-if __name__ == "__main__":
-    main()

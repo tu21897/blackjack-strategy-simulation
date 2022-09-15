@@ -1,13 +1,12 @@
 from collections import defaultdict
 import unittest
-from game_var import HandType, Card
-import hand as h
-import shoe as s
+from src.game_var import Card
+from src.shoe import Shoe
 
 class TestShoe(unittest.TestCase):
     def setUp(self):
-        self.one_deck_shoe = s.Shoe(1)
-        self.eight_deck_shoe = s.Shoe(8)
+        self.one_deck_shoe = Shoe(1)
+        self.eight_deck_shoe = Shoe(8)
         self.base_num_each_card = 4
         self.seen_cards = set()
         self.exp_card_dist = 1.0/13.0
@@ -80,25 +79,6 @@ class TestShoe(unittest.TestCase):
             assert dist > self.exp_card_dist - epsilon and dist < self.exp_card_dist + epsilon, f'Card({card}) dist({dist}) not in bounds of the expected dist({self.exp_card_dist}) with epsilon {epsilon} (eight deck shoe)'
 
         print('test_hit_card_dist - passed')
-
-class TestHand(unittest.TestCase):
-    def setUp(self):
-        self.shoe = s.Shoe(8)
-
-    def tearDown(self):
-        pass
-
-    def test_all_init_hands(self, default_bet=1.0):
-        types = defaultdict(int)
-        for first_card in Card:
-            for second_card in Card:
-                hand = h.Hand(first_card, second_card, default_bet)
-                types[hand.hand_type] += 1
-
-        assert types[HandType.BLACKJACK] == 8
-        assert types[HandType.PAIR] == 25
-        assert types[HandType.SOFT] == 16
-        assert types[HandType.HARD] == 120
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from game_var import Card, Action, HandType
+from .game_var import Card, Action, HandType
 
 @dataclass
 class Hand:

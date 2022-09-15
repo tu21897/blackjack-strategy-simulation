@@ -3,7 +3,7 @@ import shoe as s
 import hand as h
 import cProfile
 import pstats
-from game_var import Card, Action, HandType
+from .game_var import Card, Action, HandType
 
 def main():
     shoe = s.Shoe(8)
