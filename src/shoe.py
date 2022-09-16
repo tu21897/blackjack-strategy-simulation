@@ -18,6 +18,7 @@ class Shoe:
         for card in Card:
             for _ in range(num_each_card):
                 self.default_deck.append(card)
+
         self.num_total_cards = len(self.default_deck)
         self.cut_range = int(self.num_total_cards * cut_start), int(self.num_total_cards * cut_end)
         self.shuffle_deck()
@@ -27,6 +28,7 @@ class Shoe:
         self.num_rem_cards -= 1
         if self.num_rem_cards <= self.cut_depth:
             self.shuffle_deck()
+
         return card
 
     def shuffle_deck(self) -> None:

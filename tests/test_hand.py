@@ -7,7 +7,7 @@ from src.hand import Hand
 def setup():
     pytest.default_bet = 1.0
 
-def test_init_hands(setup):
+def test_init_hands(setup) -> None:
     types = defaultdict(int)
     for first_card in Card:
         for second_card in Card:
@@ -26,7 +26,7 @@ def test_init_hands(setup):
 
     print('test_init_hands - passed')
 
-def test_action_error(setup):
+def test_action_error(setup) -> None:
     hand = Hand(Card.ACE, Card.ACE, pytest.default_bet)
     for _ in range(9):
         hand.apply_action(Action.HIT, Card.ACE)
@@ -44,6 +44,7 @@ def test_action_error(setup):
     hand.apply_action(Action.HIT, Card.TEN)
     assert hand.hand_type == HandType.BUST, f'Invalid hand type ({hand.hand_type}) on bust'
     assert hand.stand, f'Active hand on {HandType.BUST}'
+
     with pytest.raises(AssertionError):
         hand.apply_action(Action.HIT, Card.TEN)
     with pytest.raises(AssertionError):
@@ -53,7 +54,7 @@ def test_action_error(setup):
 
     print('test_action_error - passed')
 
-def test_hit(setup):
+def test_hit(setup) -> None:
     for card in Card:
         if card != Card.ACE:
             hand = Hand(Card.ACE, Card.ACE, pytest.default_bet)
@@ -68,9 +69,13 @@ def test_hit(setup):
             if hand.hand_type != HandType.BLACKJACK:
                 hand.apply_action(Action.HIT, Card.SIX)
 
+    hand = Hand(Card.ACE, Card.SIX, pytest.default_bet)
+    hand.apply_action(Action.HIT, Card.THREE)
+    assert hand.hand_type == HandType.SOFT, f'Hand did not remain {HandType.SOFT}'
+
     print('test_hit - passed')
 
-def test_stand(setup):
+def test_stand(setup) -> None:
     for first_card in Card:
         for second_card in Card:
             hand = Hand(first_card, second_card, pytest.default_bet)
@@ -89,7 +94,7 @@ def test_stand(setup):
 
     print('test_stand - passed')
 
-def test_bust(setup):
+def test_bust(setup) -> None:
     for card in Card:
         if card != Card.ACE:
             hand = Hand(Card.TEN, Card.TEN, pytest.default_bet)
@@ -114,11 +119,11 @@ def test_bust(setup):
                 continue
             while not hand.stand:
                 hand.apply_action(Action.HIT, Card.EIGHT)
-            assert (hand.hand_value > 21 and hand.hand_type == HandType.BUST) or (hand.hand_value == 21 and hand.hand_type == HandType.HARD), 'Hand type and value mismatch on ending hands'
+            assert (hand.hand_value > 21 and hand.hand_type == HandType.BUST) or (hand.hand_value == 21 and hand.hand_type == HandType.HARD), 'Hand type and value mismatch on finalized hands'
 
     print('test_bust - passed')
 
-def test_doubledown(setup):
+def test_doubledown(setup) -> None:
     for first_card in Card:
         for second_card in Card:
             hand = Hand(first_card, second_card, pytest.default_bet)
@@ -137,9 +142,13 @@ def test_doubledown(setup):
     assert hand.hand_type == HandType.BUST, f'Invalid hand type ({hand.hand_type}) on bust'
     assert hand.bet_size == pytest.default_bet * 2.0, f'Bet size {hand.bet_size} did not double on {Action.DOUBLEDOWN}'
 
+    hand = Hand(Card.ACE, Card.SIX, pytest.default_bet)
+    hand.apply_action(Action.DOUBLEDOWN, Card.TEN)
+    assert hand.hand_value == 17, f'{Card.ACE} not minimizing with hand value greater than 21'
+
     print('test_doubledown - passed')
 
-def test_bet(setup):
+def test_bet(setup) -> None:
     assert Hand(Card.FIVE, Card.FIVE, -322.0).bet_size == -322.0, 'Bet size mismatch with initial bet size'
     assert Hand(Card.FIVE, Card.FIVE, 322.0).bet_size == 322.0, 'Bet size mismatch with initial bet size'
     assert Hand(Card.FIVE, Card.FIVE, 1.123).bet_size == 1.123, 'Bet size mismatch with initial bet size'

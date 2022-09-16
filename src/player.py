@@ -1,26 +1,28 @@
-from time import perf_counter
-import shoe as s
-import hand as h
-import cProfile
-import pstats
-from .game_var import Card, Action, HandType
+from dataclasses import dataclass
+from .hand import Hand
+from .game_var import Action
 
-def main():
-    shoe = s.Shoe(8)
-    start = perf_counter()
-    with cProfile.Profile() as pr:
-        for _ in range(10):
-            hand = h.Hand(shoe.hit(), shoe.hit(), 1.0)
-            while not hand.stand:
-                print(hand)
-                hand.apply_action(Action.HIT, shoe.hit())
-                print(hand, '\n')
-            print(8 * '\n')
-    stats = pstats.Stats(pr)
-    stats.sort_stats(pstats.SortKey.TIME)
-    stats.print_stats()
-    end = perf_counter()
-    print(end - start)
+@dataclass
+class Player:
+    """Player."""
+    hands: list
+    splitnum: int
+    base_bet: int
 
-if __name__ == "__main__":
-    main()
+    def __init__(self, hand, base_bet) -> None:
+        pass
+
+    def play(self, dealer_card, hand) -> None:
+        pass
+
+    def decision(self, dealer_card, hand) -> Action:
+        pass
+
+    def split(self) -> None:
+        pass
+
+    def __str__(self) -> str:
+        pass
+
+    def is_active(self) -> bool:
+        pass
